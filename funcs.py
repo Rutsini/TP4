@@ -33,6 +33,7 @@ def leer_cargar_archivo(nom):
         else:
             print("Ingrese una respuesta valida.")
             confir = input("Ingrese una respuesta correcta: ")
+        m.close()
 
 
 def pais(patente):
