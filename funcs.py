@@ -27,13 +27,14 @@ def leer_cargar_archivo(nom):
                                             int(campos[5]))
                 pickle.dump(tickets, archivo_b)
             archivo_b.close()
+
         elif confir == "no" or confir == "NO":
             print("El archivo no ah sido modificado ni creado.")
             band = True
         else:
             print("Ingrese una respuesta valida.")
             confir = input("Ingrese una respuesta correcta: ")
-        m.close()
+    m.close()
 
 
 def pais(patente):
@@ -84,8 +85,8 @@ def mostrar_op3(nom):
         while archivo_b.tell() < tamano:
             ticket = pickle.load(archivo_b)
 
-            print("Codigo: ", ticket.codigo, "Pais patente: ", pais(ticket.patente), "Tipo vehiculo: ",
-                  ticket.tipo_vehiculo, "Forma pago: ", ticket.forma_pago, "Pais cabina: ",
+            print ("Codigo: ", ticket.codigo, "Patente: ", ticket.patente, "Pais patente: ", pais(ticket.patente),
+                  "Tipo vehiculo: ", ticket.tipo_vehiculo, "Forma pago: ", ticket.forma_pago, "Pais cabina: ",
                   ticket.pais_cabina, "Distancia: ", ticket.distancia)
     else:
         print("El archivo no existe.")
@@ -102,7 +103,7 @@ def buscar_patente(nom, p):
                 print(ticket)
                 band = True
         if not band:
-            print("No se encontraron coincidencias")
+            print("No se encontraron coincidencias.")
     else:
         print("El archivo aun no existe.")
 
@@ -119,7 +120,7 @@ def buscar_codigo(nom, c):
                 band = True
                 break
         if not band:
-            print("No se encontraron coincidencias")
+            print("No se encontraron coincidencias.")
     else:
         print("El archivo aun no existe.")
 
@@ -181,12 +182,12 @@ def total_tipo(matrix):
         ac_tipo = 0
         for c_1 in range(paises):
             ac_tipo += matrix[f_1][c_1]
-        print('Tipo', f_1, '\t- Cantidad total vehiculos por fila:', ac_tipo)
+        print('Tipo', matrix_vehiculos(f_1), "(", f_1, ")", '- Cantidad total vehiculos por fila:', ac_tipo)
     for c_2 in range(paises):
         ac_paises = 0
         for f_2 in range(tipo):
             ac_paises += matrix[f_2][c_2]
-        print('paises', c_2, '\t- Cantidad total paises por columna:', ac_paises)
+        print('paises', matrix_paises(c_2), "(", c_2, ")" '- Cantidad total paises por columna:', ac_paises)
 
 
 def promedio(nom):
@@ -256,33 +257,48 @@ def cargar_vector(nom):
         print("La patente ingresada es incorrecta, ingresela nuevamente.")
         patente = input("Ingrese la patente de forma correcta: ")
 
-    tipo_vehiculo = int(input("Ingrese el tipo de vehiculo: "))
+    tipo_vehiculo = input("Ingrese el tipo de vehiculo: ")
     while not verificar_tipo_vehiculo(tipo_vehiculo):
         print("El tipo de vehiculo ingresado es incorrecto, ingreselo nuevamente.")
-        tipo_vehiculo = int(input("Ingrese el tipo de vehiculo de forma correcta: "))
+        tipo_vehiculo = input("Ingrese el tipo de vehiculo de forma correcta: ")
 
-    forma_pago = int(input("Ingrese la forma de pago: "))
+    forma_pago = input("Ingrese la forma de pago: ")
     while not verificar_forma_pago(forma_pago):
         print("La forma de pago ingresada es incorrecta, ingresela nuevamente.")
-        forma_pago = int(input("Ingrese la forma de pago de forma correcta: "))
+        forma_pago = input("Ingrese la forma de pago de forma correcta: ")
 
-    pais_cabina = int(input("Ingrese el pais de la cabina: "))
+    pais_cabina = input("Ingrese el pais de la cabina: ")
     while not verificar_pais_cabina(pais_cabina):
         print("El pais de la cabina ingresado es incorrecto, ingreselo nuevamente.")
-        pais_cabina = int(input("Ingrese el pais de la cabina de forma correcta: "))
+        pais_cabina = input("Ingrese el pais de la cabina de forma correcta: ")
 
-    distancia = int(input("Ingrese la distancia desde la ultima cabina: "))
+    distancia = input("Ingrese la distancia desde la ultima cabina: ")
     while not verificar_distancia(distancia):
         print("La distancia ingresada es incorrecta, ingresela nuevamente.")
-        distancia = int(input("Ingrese la distnacia forma correcta: "))
+        distancia = input("Ingrese la distnacia forma correcta: ")
 
-    ticket = clasesita.Tickets(codigo, patente.upper(), tipo_vehiculo, forma_pago, pais_cabina, distancia)
+    ticket = clasesita.Tickets(codigo, patente.upper(), int(tipo_vehiculo), int(forma_pago), int(pais_cabina),
+                               int(distancia))
     archivo_b = open(nom, "ab")
     pickle.dump(ticket, archivo_b)
 
 
+def es_letra(valor):
+    for i in valor:
+        if i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            return True
+    return False
+
+
+def es_digito(num):
+    for i in num:
+        if i in "0123456789":
+            return True
+    return False
+
+
 def verificar_codigo(codigo):
-    if codigo > "0":
+    if codigo > "0" and not es_letra(codigo.upper()):
         for i in codigo:
             if i in "1234567890":
                 return True
@@ -297,24 +313,27 @@ def verificar_patente(patente):
 
 
 def verificar_tipo_vehiculo(tipo_vehiculo):
-    if 0 <= tipo_vehiculo <= 2:
+    tam = len(tipo_vehiculo)
+    if "0" <= tipo_vehiculo <= "2" and es_digito(tipo_vehiculo) and tam == 1:
         return True
     return False
 
 
 def verificar_forma_pago(forma_pago):
-    if 1 <= forma_pago <= 2:
+    tam = len(forma_pago)
+    if "1" <= forma_pago <= "2" and es_digito(forma_pago) and tam == 1:
         return True
     return False
 
 
 def verificar_pais_cabina(pais_cabina):
-    if 0 <= pais_cabina <= 4:
+    tam = len(pais_cabina)
+    if "0" <= pais_cabina <= "4" and es_digito(pais_cabina) and tam == 1:
         return True
     return False
 
 
 def verificar_distancia(distancia):
-    if distancia >= 0:
+    if distancia >= "0" and es_digito(distancia):
         return True
     return False
