@@ -306,9 +306,10 @@ def verificar_codigo(codigo):
 
 #Ver cuál dejar
 def verificar_patente(patente):
-    for i in patente:
-        if i in "abcdefghijklmnopqrstuvwxyz" or i in "1234567890":
-            return True
+    if patente == " ":
+        for i in patente:
+            if i in "abcdefghijklmnopqrstuvwxyz" or i in "1234567890":
+                return True
     return False
 
 
