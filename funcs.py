@@ -337,3 +337,10 @@ def verificar_distancia(distancia):
     if distancia >= "0" and es_digito(distancia):
         return True
     return False
+
+#agregar validación para patente.
+
+def validar_patente(patente):
+    if patente == " ":
+        return True
+    return False
